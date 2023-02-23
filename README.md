@@ -8,7 +8,7 @@ The data is taken from a .json file created by the following website: https://ww
 As you will be able to see, that means we have **62937 records**, which maches the lists in the official [Generalitat lists](https://educacio.gencat.cat/web/.content/home/arees-actuacio/professors/oposicions/ingres-acces-cossos-docents/concurs-merits/valoracio-provisional/llista-provisional-merits-cos-especialitat.pdf)
 
 ### Disclaimer
-This is made with treated data and should be treated as such, all official data is in the link above.
+The algorithm output is based on treated unofficial data and should be treated as such, all official data is in the link above.
 
 ### Data treatment
 
