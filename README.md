@@ -34,7 +34,7 @@ https://github.com/cthwaite93/meritums/blob/bbe6589b115f5018fcba299c185d7eacbabd
 * The algorithm won't stop until the candidates list is empty, that means that all candidates have had the chance to be members of a specialty taking into account their priorities.
 * We take a candidate and assign them to the specialty of their choice, unless the candidate has already been assigned to a specialty.
     - If the candidate is not assigned because they have already been assigned, that try goes to a waiting list in case they get kicked out down the way.
-* If there's space in the list, in they go. 
+* If there's space in the specialty list, in they go. 
     - If not, we see if the last member of the list has less points than the candidate, and replace that member.
     - **IF THEY HAVE EQUAL POINTS, I PRIORITIZE THEIR PRIORITY AND IF IT'S THE SAME I LEAVE THE ONE ON THE LIST, DON'T HAVE ENOUGH DATA TO SORT THAT OUT.**
     https://github.com/cthwaite93/meritums/blob/bbe6589b115f5018fcba299c185d7eacbabd258f/classes/specialty.py#L15-L29
