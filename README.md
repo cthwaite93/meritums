@@ -13,6 +13,6 @@ Because the data in this list doesn't have the parcial DNI *(Spanish ID)*, I had
 \ 
 So by looking at the conflicts, I realized that it looked like that candidates with the same full name were in different tribunals *(phew)*. I decided to implement a custom identification by concatenating the full name and tribunal:
 
-```python
+```Python
     self.candidate_id = self.full_name + self.tribunal
 ```
