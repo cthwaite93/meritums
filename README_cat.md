@@ -5,7 +5,7 @@ Aquest petit programa assigna candidats a les seves respectives especialitats. L
 ## Dades
 
 Les dades estan extretes d'un fitxer .json creat pel següent lloc web: https://www.sindicat.net/llistat-provisional-concurs-de-merits-2022-2023/. Podeu fer una sol·licitud GET i obtenir tots els candidats en un sol fitxer.
-Com podreu veure, això vol dir que tenim **62.937 registres**, aquest nombre de registres coincideix amb les [llistes de la Generalitat oficials](https://educacio.gencat.cat/web/.content/home/arees-). actuacio/professors/oposicions/ingres-acces-cossos-docents/concurs-merits/valoracio-provisional/llista-provisional-merits-cos-especialitat.pdf)
+Com podreu veure, això vol dir que tenim **62.937 registres**, aquest nombre de registres coincideix amb les [llistes de la Generalitat oficials](https://educacio.gencat.cat/web/.content/home/arees-actuacio/professors/oposicions/ingres-acces-cossos-docents/concurs-merits/valoracio-provisional/llista-provisional-merits-cos-especialitat.pdf)
 
 ### Exempció de responsabilitat
 
