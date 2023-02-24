@@ -26,7 +26,7 @@ https://github.com/cthwaite93/meritums/blob/bbe6589b115f5018fcba299c185d7eacbabd
 
 Bé, això em va deixar un conflicte... així que vaig editar les dades i alguna Judit és *Judit2*.
 
-## Algorithm
+## Algorisme
 
 Per tant, a la part realment interessant: **Com assigno els candidats a la seva especialitat respectiva?**
 \
