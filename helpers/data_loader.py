@@ -1,46 +1,21 @@
-import json
-import csv
 import os
+import json
 import bisect
-from classes.specialty import Specialty
 from classes.candidate import Candidate
+from classes.specialty import Specialty
 
 
-def data_parse():
-    output_list = []
-    candidates = dict()
-    with open('data/barem_provisional.json') as f:
+def loadCandidates():
+    list_of_candidates = []
+    parsed_barem = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/parsed_barem_provisional.json"))
+    with open(parsed_barem) as f:
         data = json.load(f)
-        for obj in data["data"]:
-
-            # Fix for shitty data inconsistency where EC and ECO codes are the same specialty
-            if obj["0"] == "EC":
-                obj["0"] = "ECO"
-
-            specialty_code = obj["0"]
-            full_name = obj["3"]
-            points = obj["4"]
-            priority = obj["5"]
-            tribunal = obj["6"]
-            candidate_id = full_name + tribunal
-
-            # Check if candidate is already in with one attempt or more
-            if candidate_id in candidates:
-                candidates[candidate_id]["attempts"].append(
-                    {"code": specialty_code, "points": points, "priority": priority}
-                )
-            else:
-                candidates[candidate_id] = {
-                    "full_name": full_name,
-                    "tribunal": tribunal,
-                    "attempts": [{"code": specialty_code, "points": points, "priority": priority}]
-                }
-
-    for key in candidates:
-        output_list.append(candidates[key])
-
-    with open('data/parsed_barem_provisional.json', 'w') as f:
-        json.dump(output_list, f)
+        for obj in data:
+            new_candidate = Candidate(obj["full_name"], obj["tribunal"])
+            for attempt in obj["attempts"]:
+                new_candidate.addAttempt(attempt["code"], attempt["points"], attempt["priority"])
+            bisect.insort(list_of_candidates, new_candidate)
+    return list_of_candidates
 
 
 def loadSpecialties():
@@ -187,45 +162,3 @@ def loadSpecialties():
         "817": Specialty("817", "Tècniques de patronatge i confecció",
                          "Cos de mestres de tallers d'arts plàstiques i disseny", 1)
     }
-
-
-def loadCandidates():
-    list_of_candidates = []
-    with open('data/parsed_barem_provisional.json') as f:
-        data = json.load(f)
-        for obj in data:
-            new_candidate = Candidate(obj["full_name"], obj["tribunal"])
-            for attempt in obj["attempts"]:
-                new_candidate.addAttempt(attempt["code"], attempt["points"], attempt["priority"])
-            bisect.insort(list_of_candidates, new_candidate)
-    return list_of_candidates
-
-
-def __writeCSVRow(writer, data):
-    # Fix for catalan locale where decimal point is a comma
-    attempt = data.currentAttempt()
-    formatted_float = "{:.4f}".format(attempt.points).replace(".", ",")
-    writer.writerow([data.fullName, formatted_float, data.tribunal, attempt.priority])
-
-
-def __writeCSVRows(csv_file, specialty, reject):
-    writer = csv.writer(csv_file)
-    writer.writerow(["Nom", "Barem", "Tribunal", "Prioritat"])
-    if reject:
-        for reject in specialty.rejects:
-            __writeCSVRow(writer, reject)
-    else:
-        for member in specialty.members:
-            __writeCSVRow(writer, member)
-
-
-def writeCSV(dictionary):
-    for key in dictionary:
-        base_folder = "lists/"
-        folder_name = dictionary[key].specialtyCode + "_" + str(dictionary[key].specialtyName)
-        folder_path = base_folder + folder_name
-        os.makedirs(folder_path)
-        with open(folder_path + "/accepted.csv", "w", newline="") as csv_file:
-            __writeCSVRows(csv_file, dictionary[key], False)
-        with open(folder_path + "/rejected.csv", "w", newline="") as csv_file:
-            __writeCSVRows(csv_file, dictionary[key], True)
