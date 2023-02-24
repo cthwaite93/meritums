@@ -182,34 +182,19 @@ if __name__ == '__main__':
     # Candidates that are assigned to a specialty
     assigned = set()
 
-    # Candidates that are not checked on iterations due to being, still could be unassigned in the future
-    non_tested = dict()
-
     # While there's candidates to try and insert in a specialty
     while len(candidates) != 0:
         candidate = candidates.pop(0)
-        if candidate.candidate_id not in assigned:
-            # Tries to add candidate to specialty
-            accepted, rejected_id = specialties[candidate.specialty_code].addCandidate(candidate)
-            if accepted:
-                assigned.add(candidate.candidate_id)  # Add candidate to the set of assigned candidates
-                if bool(rejected_id):  # If adding the new candidate has unassigned another one
-                    # Remove that candidate from assigned candidates
-                    assigned.remove(rejected_id)
-                    # Check if candidate was on non-tested set and get all entries that weren't tested
-                    if rejected_id in non_tested:
-                        # Get all entries of candidate that weren't tested
-                        removed_candidates = non_tested.pop(rejected_id)
-                        for removed_candidate in removed_candidates:
-                            # Insert the candidate's entries that haven't been back in the list to try and assign it,
-                            # they're inserted by ascent on their priority and descent on their points
-                            bisect.insort_left(candidates, removed_candidate)
-        else:
-            # Add candidate entry to non-tested just in case the candidate gets unassigned in the future
-            if candidate.candidate_id not in non_tested:
-                non_tested[candidate.candidate_id] = [candidate]
-            else:
-                # Insert another entry that hasn't been tested by ascent due to the priority and descent on points
-                bisect.insort(non_tested[candidate.candidate_id], candidate)
+        if candidate.candidateId not in assigned:
+            if candidate.hasAttempts():
+                attempt = candidate.currentAttempt()
+                accepted, rejected = specialties[attempt.specialtyCode].addCandidate(candidate)
+                if accepted:
+                    assigned.add(candidate)  # Add candidate to the set of assigned candidates
+                    if bool(rejected):  # If adding the new candidate has unassigned another one
+                        # Remove that candidate from assigned candidates
+                        assigned.remove(rejected)
+                        if rejected.hasAttempts():
+                            bisect.insort_left(candidates, rejected)
 
     writeCSV(specialties)

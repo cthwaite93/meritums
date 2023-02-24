@@ -36,7 +36,7 @@ class Specialty:
             if last_member.currentAttempt().points < candidate.currentAttempt().points:
                 bisect.insort_left(self.members, candidate)
                 last_member.removeCurrentAttempt()
-                return True, last_member.candidateId
+                return True, last_member
 
             # If last member of list has more points
             elif last_member.currentAttempt().points > candidate.currentAttempt().points:
@@ -53,4 +53,4 @@ class Specialty:
             else:
                 self.members.append(candidate)
                 last_member.removeCurrentAttempt()
-                return True, last_member.candidateId
+                return True, last_member

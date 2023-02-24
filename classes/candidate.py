@@ -31,7 +31,7 @@ class Candidate:
     def addAttempt(self, specialty_code, points, priority):
         bisect.insort_left(self.__attempts, Attempt(specialty_code, points, priority))
 
-    def isThereAttempts(self):
+    def hasAttempts(self):
         return len(self.__attempts)
 
     def currentAttempt(self):
