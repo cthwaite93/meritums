@@ -5,7 +5,7 @@ This little program assigns candidates to their respective specialties. Specialt
 ## Data
 
 The data is taken from a .json file created by the following website: https://www.sindicat.net/llistat-provisional-concurs-de-merits-2022-2023/. You can make a GET Request and get all the candidates in one single file.
-As you will be able to see, that means we have **62937 records**, which maches the lists in the official [Generalitat lists](https://educacio.gencat.cat/web/.content/home/arees-actuacio/professors/oposicions/ingres-acces-cossos-docents/concurs-merits/valoracio-provisional/llista-provisional-merits-cos-especialitat.pdf)
+As you will be able to see, that means we have **62937 records**, which maches the lists in the official [Generalitat lists](https://educacio.gencat.cat/web/.content/home/arees-actuacio/professors/oposicions/ingres-acces-cossos-docents/concurs-merits/valoracio-provisional/llista-provisional-merits-cos-especialitat.pdf).
 
 ### Disclaimer
 The algorithm output is based on treated unofficial data and should be treated as such, all official data is in the link above.
