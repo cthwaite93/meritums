@@ -15,7 +15,7 @@ class Specialty:
 
     @property
     def specialtyName(self):
-        return self._section
+        return self._specialty_name
 
     @property
     def section(self):
@@ -42,13 +42,13 @@ class Specialty:
             elif last_member.currentAttempt().points > candidate.currentAttempt().points:
                 self.members.append(last_member)  # Put last member back in the list
                 candidate.removeCurrentAttempt()
-                return False
+                return False, ""
 
             # If they have equal points I sort by priority
-            elif last_member.priority < candidate.priority:
+            elif last_member.currentAttempt().priority < candidate.currentAttempt().priority:
                 self.members.append(last_member)  # Don't have the info to sort it in another way
                 candidate.removeCurrentAttempt()
-                return False
+                return False, ""
 
             else:
                 self.members.append(candidate)

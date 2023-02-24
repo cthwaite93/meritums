@@ -157,7 +157,7 @@ def loadCandidates():
         data = json.load(f)
         for obj in data:
             new_candidate = Candidate(obj["full_name"], obj["tribunal"])
-            for attempt in data["attempts"]:
+            for attempt in obj["attempts"]:
                 new_candidate.addAttempt(attempt["code"], attempt["points"], attempt["priority"])
             bisect.insort(list_of_candidates, new_candidate)
     return list_of_candidates
@@ -165,14 +165,15 @@ def loadCandidates():
 
 def writeCSV(dictionary):
     for key in dictionary:
-        with open("lists/" + dictionary[key].specialty_code + " " + str(dictionary[key].specialty_name) + ".csv", "w",
+        with open("testLists/" + dictionary[key].specialtyCode + " " + str(dictionary[key].specialtyName) + ".csv", "w",
                   newline="") as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow(["Nom", "Barem", "Tribunal", "Prioritat"])
             for member in specialties[key].members:
                 # Fix for catalan locale where decimal point is a comma
-                formatted_float = "{:.4f}".format(member.points).replace(".", ",")
-                writer.writerow([member.full_name, formatted_float, member.tribunal, member.priority])
+                attempt = member.currentAttempt()
+                formatted_float = "{:.4f}".format(attempt.points).replace(".", ",")
+                writer.writerow([member.fullName, formatted_float, member.tribunal, attempt.priority])
 
 
 if __name__ == '__main__':
@@ -187,13 +188,15 @@ if __name__ == '__main__':
         candidate = candidates.pop(0)
         if candidate.candidateId not in assigned:
             if candidate.hasAttempts():
-                attempt = candidate.currentAttempt()
-                accepted, rejected = specialties[attempt.specialtyCode].addCandidate(candidate)
+                current_attempt = candidate.currentAttempt()
+                accepted, rejected = specialties[current_attempt.specialtyCode].addCandidate(candidate)
                 if accepted:
                     assigned.add(candidate)  # Add candidate to the set of assigned candidates
-                    if bool(rejected):  # If adding the new candidate has unassigned another one
+                    # If adding the new candidate has unassigned another one
+                    if bool(rejected):
                         # Remove that candidate from assigned candidates
                         assigned.remove(rejected)
+                        # Reinstate candidate with left attempts
                         if rejected.hasAttempts():
                             bisect.insort_left(candidates, rejected)
 

@@ -1,5 +1,5 @@
 import bisect
-from attempt import Attempt
+from classes.attempt import Attempt
 
 
 class Candidate:
