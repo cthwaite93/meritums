@@ -68,7 +68,7 @@ https://github.com/cthwaite93/meritums/blob/5bb96bee51dab7e41685ca6cc4fa693d7d10
 Tot s'executa en ments de 2 segons, n'estic molt content.
 
 ## Resultats
-A la carpeta *lists* tens una carpeta per a cadascuna de les especialitats que estan passant pel procés de mèrits.
+A la carpeta *lists* teniu una carpeta per a cadascuna de les especialitats que estan passant pel procés de mèrits.
 \
 \
 Dins de la carpeta d'especialitats, teniu la llista accepted.csv, on trobareu qui ha estat admès a l'especialitat.
