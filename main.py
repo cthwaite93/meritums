@@ -1,6 +1,7 @@
 import csv
 import bisect
 import json
+import os
 from classes.specialty import Specialty
 from classes.candidate import Candidate
 
@@ -163,17 +164,34 @@ def loadCandidates():
     return list_of_candidates
 
 
+def writeCSVRow(writer, data):
+    # Fix for catalan locale where decimal point is a comma
+    attempt = data.currentAttempt()
+    formatted_float = "{:.4f}".format(attempt.points).replace(".", ",")
+    writer.writerow([data.fullName, formatted_float, data.tribunal, attempt.priority])
+
+
+def writeCSVRows(csv_file, specialty, reject):
+    writer = csv.writer(csv_file)
+    writer.writerow(["Nom", "Barem", "Tribunal", "Prioritat"])
+    if not reject:
+        for member in specialty.members:
+            writeCSVRow(writer, member)
+    else:
+        for reject in specialty.rejects:
+            writeCSVRow(writer, reject)
+
+
 def writeCSV(dictionary):
     for key in dictionary:
-        with open("testLists/" + dictionary[key].specialtyCode + " " + str(dictionary[key].specialtyName) + ".csv", "w",
-                  newline="") as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow(["Nom", "Barem", "Tribunal", "Prioritat"])
-            for member in specialties[key].members:
-                # Fix for catalan locale where decimal point is a comma
-                attempt = member.currentAttempt()
-                formatted_float = "{:.4f}".format(attempt.points).replace(".", ",")
-                writer.writerow([member.fullName, formatted_float, member.tribunal, attempt.priority])
+        base_folder = "lists/"
+        folder_name = dictionary[key].specialtyCode + "_" + str(dictionary[key].specialtyName)
+        folder_path = base_folder + folder_name
+        os.makedirs(folder_path)
+        with open(folder_path + "/accepted.csv", "w", newline="") as csv_file:
+            writeCSVRows(csv_file, dictionary[key], False)
+        with open(folder_path + "/rejected.csv", "w", newline="") as csv_file:
+            writeCSVRows(csv_file, dictionary[key], True)
 
 
 if __name__ == '__main__':
@@ -199,5 +217,7 @@ if __name__ == '__main__':
                         # Reinstate candidate with left attempts
                         if rejected.hasAttempts():
                             bisect.insort_left(candidates, rejected)
+                elif candidate.hasAttempts():
+                    bisect.insort_left(candidates, candidate)
 
     writeCSV(specialties)

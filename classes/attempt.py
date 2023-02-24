@@ -1,8 +1,8 @@
 class Attempt:
-    def __init__(self, specialty_code, priority, points):
+    def __init__(self, specialty_code, points, priority):
         self._specialty_code = specialty_code
-        self._priority = priority
         self._points = points
+        self._priority = priority
 
     @property
     def specialtyCode(self):
