@@ -26,7 +26,6 @@ def data_parse():
                 )
             else:
                 candidates[candidate_id] = {
-                    "candidate_id": candidate_id,
                     "full_name": full_name,
                     "tribunal": tribunal,
                     "attempts": [{"code": specialty_code, "points": points, "priority": priority}]

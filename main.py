@@ -153,12 +153,12 @@ def loadSpecialties():
 
 def loadCandidates():
     list_of_candidates = []
-    with open('data/barem_provisional.json') as f:
+    with open('data/parsed_barem_provisional.json') as f:
         data = json.load(f)
-        for obj in data["data"]:
-            if obj["0"] == "EC":
-                obj["0"] = "ECO"  # Fix for shitty data inconsistency where EC and ECO codes are the same specialty
-            new_candidate = Candidate(obj["0"], obj["1"], obj["2"], obj["3"], obj["4"], obj["6"], obj["5"])
+        for obj in data:
+            new_candidate = Candidate(obj["full_name"], obj["tribunal"])
+            for attempt in data["attempts"]:
+                new_candidate.addAttempt(attempt["code"], attempt["points"], attempt["priority"])
             bisect.insort(list_of_candidates, new_candidate)
     return list_of_candidates
 

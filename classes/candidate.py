@@ -3,14 +3,14 @@ from attempt import Attempt
 
 
 class Candidate:
-    def __init__(self, specialty_code, full_name, points, tribunal, priority):
+    def __init__(self, full_name, tribunal):
         # This is done because there are some people who are different with the exact same full name, so we can identify
         # a candidate that might have different entries with different priorities. There can never be two candidates
         # with the same candidate_id and priority
         self._candidate_id = full_name + tribunal
         self._full_name = full_name
         self._tribunal = tribunal
-        self._attempts = [Attempt(specialty_code, points, priority)]
+        self._attempts = []
 
     @property
     def candidateId(self):
@@ -30,6 +30,9 @@ class Candidate:
 
     def addAttempt(self, specialty_code, points, priority):
         bisect.insort_left(self.__attempts, Attempt(specialty_code, points, priority))
+
+    def isThereAttempts(self):
+        return len(self.__attempts)
 
     def currentAttempt(self):
         return self.__attempts[0]
