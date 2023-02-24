@@ -79,6 +79,4 @@ A més, trobareu la llista rejected.csv, on trobareu els que han estat rebutjats
 És important indicar que *CAP CANDIDAT* pot estar en més d'una llista acceptada, i si han estat acceptats no apareixeran en cap de les llistes rebutjades *(té sentit)*.
 \
 \
-
-
 D'altra banda, un candidat **pot figurar** en una o més llistes rebutjades sinó ha estat seleccionat a cap.
