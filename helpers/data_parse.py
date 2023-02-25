@@ -1,44 +1,47 @@
+import csv
 import json
 import os
+import helpers.data_loader
 
 
 def __data_parse():
-    barem_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/barem_provisional.json"))
-    output_list = []
+    specialties = helpers.data_loader.loadSpecialties()
     candidates = dict()
-    with open(barem_path, 'r') as f:
-        data = json.load(f)
-        for obj in data["data"]:
+    for key in specialties:
+        csv_path = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "../data/llista-provisional-merits-cos-" + key + ".csv")
+        )
+        try:
+            with open(csv_path, 'r', newline='') as csv_file:
+                reader = csv.reader(csv_file)
 
-            # Fix for shitty data inconsistency where EC and ECO codes are the same specialty
-            if obj["0"] == "EC":
-                obj["0"] = "ECO"
+                for row in reader:
+                    if not row[0].startswith('***'):
+                        continue
 
-            specialty_code = obj["0"]
-            full_name = obj["3"]
-            points = obj["4"]
-            priority = obj["5"]
-            tribunal = obj["6"]
-            candidate_id = full_name + tribunal
+                    specialty_code = key
+                    partial_id = row[0]
+                    full_name = row[1]
+                    points = float(row[2].replace(',', '.'))
+                    tribunal = row[3]
+                    priority = int(row[4])
+                    candidate_id = partial_id + full_name + tribunal
 
-            # Check if candidate is already in with one attempt or more
-            if candidate_id in candidates:
-                candidates[candidate_id]["attempts"].append(
-                    {"code": specialty_code, "points": points, "priority": priority}
-                )
-            else:
-                candidates[candidate_id] = {
-                    "full_name": full_name,
-                    "tribunal": tribunal,
-                    "attempts": [{"code": specialty_code, "points": points, "priority": priority}]
-                }
+                    # Check if candidate is already in with one attempt or more
+                    if candidate_id in candidates:
+                        candidates[candidate_id]["attempts"][specialty_code] = {"points": points, "priority": priority}
+                    else:
+                        candidates[candidate_id] = {
+                            "full_name": full_name,
+                            "tribunal": tribunal,
+                            "attempts": {specialty_code: {"points": points, "priority": priority}}
+                        }
+        except FileNotFoundError:
+            continue
 
-    for key in candidates:
-        output_list.append(candidates[key])
-
-    parsed_barem = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/parsed_barem_provisional.json"))
+    parsed_barem = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/parsed_llista_provisional.json"))
     with open(parsed_barem, 'w') as f:
-        json.dump(output_list, f)
+        json.dump(candidates, f)
 
 
 if __name__ == "__main__":
