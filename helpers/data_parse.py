@@ -26,6 +26,7 @@ def __data_parse():
                     tribunal = row[3]
                     priority = int(row[4])
                     candidate_id = partial_id + full_name + tribunal
+                    candidate_id = candidate_id.replace(' ', '')
 
                     # Check if candidate is already in with one attempt or more
                     if candidate_id in candidates:
