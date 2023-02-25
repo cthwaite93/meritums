@@ -6,6 +6,7 @@ import helpers.data_loader
 if __name__ == '__main__':
     specialties = helpers.data_loader.loadSpecialties()
     candidates = helpers.data_loader.loadCandidates()
+    print(len(candidates))
 
     # While there's candidates to try and insert in a specialty
     while len(candidates) != 0:
